@@ -1,0 +1,17 @@
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\bin\Debug\net10.0\MyProject.DataAccess.deps.json
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\bin\Debug\net10.0\MyProject.DataAccess.runtimeconfig.json
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\bin\Debug\net10.0\MyProject.DataAccess.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\bin\Debug\net10.0\MyProject.DataAccess.pdb
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\bin\Debug\net10.0\MyProject.Entity.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\bin\Debug\net10.0\MyProject.Entity.pdb
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.csproj.AssemblyReference.cache
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.AssemblyInfo.cs
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProjec.77FF671F.Up2Date
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\refint\MyProject.DataAccess.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.pdb
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.genruntimeconfig.cache
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\ref\MyProject.DataAccess.dll

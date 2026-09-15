@@ -1,0 +1,12 @@
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\bin\Debug\net10.0\MyProject.Business.deps.json
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\bin\Debug\net10.0\MyProject.Business.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\bin\Debug\net10.0\MyProject.Business.pdb
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\MyProject.Business.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\MyProject.Business.AssemblyInfoInputs.cache
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\MyProject.Business.AssemblyInfo.cs
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\MyProject.Business.csproj.CoreCompileInputs.cache
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\MyProject.Business.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\refint\MyProject.Business.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\MyProject.Business.pdb
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\ref\MyProject.Business.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Business\obj\Debug\net10.0\MyProjec.68535726.Up2Date
