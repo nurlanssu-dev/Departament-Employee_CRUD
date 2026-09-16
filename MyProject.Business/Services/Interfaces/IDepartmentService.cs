@@ -1,4 +1,4 @@
-﻿using MyProject.Entity.Entities;
+﻿ using MyProject.Entity.Entities;
 
 namespace MyProject.Business.Services.Interfaces
 {
@@ -6,7 +6,7 @@ namespace MyProject.Business.Services.Interfaces
     {
         Task<Department> CreateAsync(Department department);
         Task<bool> DeleteAsync(int id);
-        Task<List<Department>> GetAllAsync();
+        List<Department> GetAll();
         Task<Department?> GetByIdAsync(int id);
         Task<bool> UpdateAsync(int id, Department department);
     }

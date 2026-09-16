@@ -1,24 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyProject.Business.Services.Interfaces;
-using MyProject.DataAccess.Contexts;
+using MyProject.DataAccess.Repositories.Interfaces;
 using MyProject.Entity.Entities;
 
 namespace MyProject.Business.Services.Implementation;
 
 public class DepartmentService : IDepartmentService
 {
-    private readonly MyProjectContext _context;
+    private readonly IRepository<Department> _repository;
 
-    public DepartmentService(MyProjectContext context)
+    public DepartmentService(IRepository<Department> repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     // CREATE
     public async Task<Department> CreateAsync(Department department)
     {
-        var exists = await _context.Departments
-            .AnyAsync(d => d.Name == department.Name);
+        var exists = await _repository.AnyAsync(
+            d => d.Name == department.Name);
 
         if (exists)
         {
@@ -26,44 +26,44 @@ public class DepartmentService : IDepartmentService
                 "A department with this name already exists.");
         }
 
-        await _context.Departments.AddAsync(department);
-        await _context.SaveChangesAsync();
+        await _repository.AddAsync(department);
+        await _repository.SaveChangesAsync();
 
         return department;
     }
 
     // GET ALL
-    public async Task<List<Department>> GetAllAsync()
+    public List<Department> GetAll()
     {
-        return await _context.Departments
-            .Include(d => d.Employees)
-            .ThenInclude(e => e.EmployeeProjects)
-            .ThenInclude(ep => ep.Project)
-            .AsNoTracking()
-            .ToListAsync();
+        return _repository.GetAll(
+            null,
+            d => d.OrderBy(d => d.Name),
+            d => d.Include(d => d.Employees)
+                  .ThenInclude(e => e.EmployeeProjects)
+                  .ThenInclude(ep => ep.Project)
+        ).ToList();
     }
 
     // GET BY ID
     public async Task<Department?> GetByIdAsync(int id)
     {
-        return await _context.Departments
-            .AsNoTracking()
-            .FirstOrDefaultAsync(d => d.Id == id);
+        return await _repository.GetByIdAsync(id);
     }
 
     // UPDATE
-    public async Task<bool> UpdateAsync(int id, Department department)
+    public async Task<bool> UpdateAsync(
+        int id,
+        Department department)
     {
         var existingDepartment =
-            await _context.Departments.FindAsync(id);
+            await _repository.GetByIdAsync(id);
 
         if (existingDepartment is null)
             return false;
 
-        var nameExists = await _context.Departments
-            .AnyAsync(d =>
-                d.Name == department.Name &&
-                d.Id != id);
+        var nameExists = await _repository.AnyAsync(d =>
+            d.Name == department.Name &&
+            d.Id != id);
 
         if (nameExists)
         {
@@ -76,7 +76,9 @@ public class DepartmentService : IDepartmentService
         existingDepartment.Limit = department.Limit;
         existingDepartment.Location = department.Location;
 
-        await _context.SaveChangesAsync();
+        _repository.Update(existingDepartment);
+
+        await _repository.SaveChangesAsync();
 
         return true;
     }
@@ -85,14 +87,14 @@ public class DepartmentService : IDepartmentService
     public async Task<bool> DeleteAsync(int id)
     {
         var department =
-            await _context.Departments.FindAsync(id);
+            await _repository.GetByIdAsync(id);
 
         if (department is null)
             return false;
 
-        _context.Departments.Remove(department);
+        _repository.Delete(department);
 
-        await _context.SaveChangesAsync();
+        await _repository.SaveChangesAsync();
 
         return true;
     }
