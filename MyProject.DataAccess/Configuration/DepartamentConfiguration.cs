@@ -15,6 +15,7 @@ internal class DepartamentConfiguration : IEntityTypeConfiguration<Department>
         builder.Property(d => d.Location).IsRequired(false).HasMaxLength(200);
         builder.Property(d => d.CreatedAt).IsRequired();
         builder.Property(d => d.UpdatedAt).IsRequired(false);
+        builder.HasMany(d => d.Employees).WithOne(e => e.Department).HasForeignKey(e => e.DepartmentId).OnDelete(DeleteBehavior.Cascade);
 
     }
 }

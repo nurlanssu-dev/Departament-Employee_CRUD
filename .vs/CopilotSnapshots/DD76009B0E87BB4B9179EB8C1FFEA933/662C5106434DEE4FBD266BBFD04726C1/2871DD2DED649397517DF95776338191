@@ -1,0 +1,13 @@
+﻿using MyProject.DataAccess.Contexts;
+
+namespace MyProject.Business.Services.Implementation;
+
+public class EmployeeService
+{
+    private readonly MyProjectContext _context;
+
+    public EmployeeService(MyProjectContext context)
+    {
+        _context = context;
+    }
+}

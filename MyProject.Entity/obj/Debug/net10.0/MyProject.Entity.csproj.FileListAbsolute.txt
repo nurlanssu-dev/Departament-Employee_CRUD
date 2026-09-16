@@ -10,3 +10,4 @@ C:\Users\Nurlan\source\repos\MyProject\MyProject.Entity\obj\Debug\net10.0\refint
 C:\Users\Nurlan\source\repos\MyProject\MyProject.Entity\obj\Debug\net10.0\MyProject.Entity.pdb
 C:\Users\Nurlan\source\repos\MyProject\MyProject.Entity\obj\Debug\net10.0\ref\MyProject.Entity.dll
 C:\Users\Nurlan\source\repos\MyProject\MyProject.Entity\obj\Debug\net10.0\MyProjec.543034F1.Up2Date
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Entity\obj\Debug\net10.0\MyProject.Entity.sourcelink.json

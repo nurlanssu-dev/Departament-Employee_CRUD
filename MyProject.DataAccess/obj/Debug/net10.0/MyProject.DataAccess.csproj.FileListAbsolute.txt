@@ -15,3 +15,4 @@ C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\re
 C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.pdb
 C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.genruntimeconfig.cache
 C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\ref\MyProject.DataAccess.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.DataAccess\obj\Debug\net10.0\MyProject.DataAccess.sourcelink.json
