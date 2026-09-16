@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyProject.Business.Services.Interfaces;
 using MyProject.DataAccess.Contexts;
 using MyProject.Entity.Entities;
 
 namespace MyProject.Business.Services.Implementation;
 
-public class EmployeeService
+public class EmployeeService : IEmployeeService
 {
     private readonly MyProjectContext _context;
 
@@ -87,7 +88,7 @@ public class EmployeeService
         existing.PhoneNumber = employee.PhoneNumber;
         existing.DateOfBirth = employee.DateOfBirth;
         existing.DepartmentId = employee.DepartmentId;
-      
+
 
         await _context.SaveChangesAsync();
 

@@ -17,8 +17,14 @@ public class DepartmentService : IDepartmentService
     // CREATE
     public async Task<Department> CreateAsync(Department department)
     {
-        department.CreatedAt = DateTime.UtcNow;
-        department.UpdatedAt = null;
+        var exists = await _context.Departments
+            .AnyAsync(d => d.Name == department.Name);
+
+        if (exists)
+        {
+            throw new InvalidOperationException(
+                "A department with this name already exists.");
+        }
 
         await _context.Departments.AddAsync(department);
         await _context.SaveChangesAsync();
@@ -39,7 +45,7 @@ public class DepartmentService : IDepartmentService
     {
         return await _context.Departments
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(d => d.Id == id);
     }
 
     // UPDATE
@@ -51,11 +57,21 @@ public class DepartmentService : IDepartmentService
         if (existingDepartment is null)
             return false;
 
+        var nameExists = await _context.Departments
+            .AnyAsync(d =>
+                d.Name == department.Name &&
+                d.Id != id);
+
+        if (nameExists)
+        {
+            throw new InvalidOperationException(
+                "A department with this name already exists.");
+        }
+
         existingDepartment.Name = department.Name;
         existingDepartment.Description = department.Description;
         existingDepartment.Limit = department.Limit;
         existingDepartment.Location = department.Location;
-        existingDepartment.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 
