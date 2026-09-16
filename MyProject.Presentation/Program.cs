@@ -83,27 +83,27 @@ Console.WriteLine("Program started");
 
 //CreateAsync(employee)
 
-var newEmployee = new Employee
-{
-    FirstName = "Nurlan",
-    LastName = "Aliyev",
-    Email = "nurlan.aliyev@gmail.com",
-    PhoneNumber = "+994501234567",
-    DateOfBirth = new DateTime(2000, 5, 20),
-    DepartmentId = 2
-};
+//var newEmployee = new Employee
+//{
+//    FirstName = "Nurlan",
+//    LastName = "Aliyev",
+//    Email = "nurlan.aliyev@gmail.com",
+//    PhoneNumber = "+994501234567",
+//    DateOfBirth = new DateTime(2000, 5, 20),
+//    DepartmentId = 2
+//};
 
-var createdEmployee =
-    await employeeService.CreateAsync(newEmployee);
+//var createdEmployee =
+//    await employeeService.CreateAsync(newEmployee);
 
-if (createdEmployee is null)
-{
-    Console.WriteLine(
-        "Employee yaradılmadı. Department yoxdur və ya limit doludur.");
-}
-else
-{
-    Console.WriteLine(
-        $"Created: {createdEmployee.Id} - " +
-        $"{createdEmployee.FirstName} {createdEmployee.LastName}");
-}
+//if (createdEmployee is null)
+//{
+//    Console.WriteLine(
+//        "Employee yaradılmadı. Department yoxdur və ya limit doludur.");
+//}
+//else
+//{
+//    Console.WriteLine(
+//        $"Created: {createdEmployee.Id} - " +
+//        $"{createdEmployee.FirstName} {createdEmployee.LastName}");
+//}

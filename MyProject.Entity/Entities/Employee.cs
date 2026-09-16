@@ -12,4 +12,5 @@ public class Employee : AuditEntity
     public DateTime DateOfBirth { get; set; }
     public int DepartmentId { get; set; }
     public Department Department { get; set; } = null!;
+    public List<EmployeeProject>? EmployeeProjects { get; set; }
 }

@@ -36,6 +36,7 @@ public class DepartmentService : IDepartmentService
     public async Task<List<Department>> GetAllAsync()
     {
         return await _context.Departments
+            .Include(d => d.Employees)
             .AsNoTracking()
             .ToListAsync();
     }
