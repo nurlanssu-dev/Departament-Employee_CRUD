@@ -10,6 +10,8 @@ public class MyProjectContext : DbContext
 {
     public DbSet<Department> Departments { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Project> Projects { get; set; }
+    public DbSet<EmployeeProject> EmployeeProjects { get; set; } 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -19,7 +21,7 @@ public class MyProjectContext : DbContext
 
     override protected void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new DepartamentConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(MyProjectContext).Assembly);
         base.OnModelCreating(modelBuilder);
     }
 

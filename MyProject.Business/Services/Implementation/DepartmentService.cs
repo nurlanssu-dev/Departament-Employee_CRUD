@@ -37,6 +37,8 @@ public class DepartmentService : IDepartmentService
     {
         return await _context.Departments
             .Include(d => d.Employees)
+            .ThenInclude(e => e.EmployeeProjects)
+            .ThenInclude(ep => ep.Project)
             .AsNoTracking()
             .ToListAsync();
     }
