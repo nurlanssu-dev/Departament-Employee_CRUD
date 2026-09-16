@@ -165,3 +165,5 @@ C:\Users\Nurlan\source\repos\MyProject\MyProject.Presentation\bin\Debug\net10.0\
 C:\Users\Nurlan\source\repos\MyProject\MyProject.Presentation\bin\Debug\net10.0\MyProject.Entity.pdb
 C:\Users\Nurlan\source\repos\MyProject\MyProject.Presentation\obj\Debug\net10.0\MyProject.Presentation.csproj.AssemblyReference.cache
 C:\Users\Nurlan\source\repos\MyProject\MyProject.Presentation\obj\Debug\net10.0\MyProject.Presentation.sourcelink.json
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Presentation\bin\Debug\net10.0\MyProject.Business.dll
+C:\Users\Nurlan\source\repos\MyProject\MyProject.Presentation\bin\Debug\net10.0\MyProject.Business.pdb
