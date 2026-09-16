@@ -1,7 +1,11 @@
-﻿using MyProject.Business.Services.Implementation;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MyProject.Business.Services.Implementation;
+using MyProject.Business.Services.Interfaces;
 using MyProject.DataAccess.Contexts;
+using MyProject.DataAccess.Repositories.Implementation;
+using MyProject.DataAccess.Repositories.Interfaces;
 using MyProject.Entity.Entities;
-
+#region 1
 //using var context = new MyProjectContext();
 
 //var departmentService = new DepartmentService(context);
@@ -108,6 +112,18 @@ using MyProject.Entity.Entities;
 ////        $"{createdEmployee.FirstName} {createdEmployee.LastName}");
 ////}
 ///
+#endregion
+var services = new ServiceCollection();
+services.AddScoped<IDepartmentService, DepartmentService>();
+services.AddScoped<IRepository<Department>, Repository<Department>>();
+services.AddDbContext<MyProjectContext>();
 
-
-
+var serviceProvider = services.BuildServiceProvider();
+var departmentService = serviceProvider.GetRequiredService<IDepartmentService>();
+await departmentService.CreateAsync(new Department
+{
+    Name = "LOGISTICSs",
+    Description = "Logistics department",
+    Limit = 20,
+    Location = "Floor 2"
+});

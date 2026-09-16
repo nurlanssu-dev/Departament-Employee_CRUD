@@ -12,11 +12,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MyProject.Business\MyProject.Business.csproj" />
     <ProjectReference Include="..\MyProject.DataAccess\MyProject.DataAccess.csproj" />
+    <ProjectReference Include="..\MyProject.Entity\MyProject.Entity.csproj" />
   </ItemGroup>
 
 </Project>
