@@ -1,47 +1,66 @@
-# Department & Employee CRUD Application
+Department, Employee & Project Management Application
 
-This project is a simple **Department and Employee Management System** developed with **C#**, **.NET**, **Entity Framework Core**, and **SQL Server**.
+This project is a simple Department, Employee, and Project Management System developed with C#, .NET, Entity Framework Core, and SQL Server.
 
-The project demonstrates CRUD operations, entity relationships, layered architecture, Entity Framework Core migrations, Fluent API configurations, and automatic audit tracking.
+The project demonstrates CRUD operations, entity relationships, layered architecture, generic repository usage, Entity Framework Core migrations, Fluent API configurations, LINQ queries, eager loading, and automatic audit tracking.
 
----
+Technologies
 
-## Technologies
+C#
 
-- C#
-- .NET
-- Entity Framework Core
-- SQL Server
-- LINQ
-- Async / Await
-- Fluent API
-- EF Core Migrations
+.NET
 
----
+Entity Framework Core
 
-## Project Structure
+SQL Server
+
+LINQ
+
+Async / Await
+
+Fluent API
+
+EF Core Migrations
+
+Repository Pattern
+
+Project Structure
 
 The solution is divided into four main layers:
 
-```text
 src
 │
 ├── MyProject.Entity
 │   └── Entities
 │       ├── Common
-│       │   ├── BaseEntity.cs
+│       │   ├── BasaEntity.cs
 │       │   └── AuditEntity.cs
 │       │
+│       ├── Enums
+│       │   └── EployeeStatus.cs
+│       │
 │       ├── Department.cs
-│       └── Employee.cs
+│       ├── Employee.cs
+│       ├── Project.cs
+│       └── EmployeeProject.cs
 │
 ├── MyProject.DataAccess
 │   ├── Configuration
-│   │   ├── DepartamentConfiguration.cs
-│   │   └── EmployeeConfiguration.cs
+│   │   ├── DepartmentConfiguration.cs
+│   │   ├── EmployeeConfiguration.cs
+│   │   └── EmployeeProjectConfiguration.cs
 │   │
 │   ├── Contexts
 │   │   └── MyProjectContext.cs
+│   │
+│   ├── Repositories
+│   │   ├── Interfaces
+│   │   │   ├── IRepository.cs
+│   │   │   └── IDepartmentRepository.cs
+│   │   │
+│   │   └── Implementation
+│   │       ├── Repository.cs
+│   │       └── DepartmentRepository.cs
 │   │
 │   └── Migrations
 │
@@ -57,17 +76,13 @@ src
 │
 └── MyProject.Presentation
     └── Program.cs
-```
 
----
+Entities
 
-# Entities
-
-## Department
+Department
 
 A department contains basic department information and a collection of employees.
 
-```csharp
 public class Department : AuditEntity
 {
     public string Name { get; set; } = null!;
@@ -77,27 +92,49 @@ public class Department : AuditEntity
 
     public List<Employee>? Employees { get; set; } = new List<Employee>();
 }
-```
 
-### Department properties
+Department properties
 
-| Property | Description |
-|---|---|
-| Id | Unique identifier |
-| Name | Department name |
-| Description | Department description |
-| Limit | Maximum number of employees |
-| Location | Department location |
-| CreatedAt | Creation date |
-| UpdatedAt | Last update date |
+Property
 
----
+Description
 
-## Employee
+Id
 
-Each employee belongs to one department.
+Unique identifier
 
-```csharp
+Name
+
+Department name
+
+Description
+
+Department description
+
+Limit
+
+Maximum number of employees
+
+Location
+
+Department location
+
+Employees
+
+Employees that belong to the department
+
+CreatedAt
+
+Creation date
+
+UpdatedAt
+
+Last update date
+
+Employee
+
+Each employee belongs to one department and can be assigned to multiple projects.
+
 public class Employee : AuditEntity
 {
     public string FirstName { get; set; } = null!;
@@ -107,58 +144,203 @@ public class Employee : AuditEntity
     public DateTime DateOfBirth { get; set; }
 
     public int DepartmentId { get; set; }
+    public EployeeStatus Status { get; set; } = EployeeStatus.Active;
+
     public Department Department { get; set; } = null!;
+    public List<EmployeeProject>? EmployeeProjects { get; set; }
 }
-```
 
-### Employee properties
+Employee properties
 
-| Property | Description |
-|---|---|
-| Id | Unique identifier |
-| FirstName | Employee first name |
-| LastName | Employee last name |
-| Email | Employee email |
-| PhoneNumber | Employee phone number |
-| DateOfBirth | Employee birth date |
-| DepartmentId | Foreign key of Department |
-| CreatedAt | Creation date |
-| UpdatedAt | Last update date |
+Property
 
----
+Description
 
-# Entity Relationship
+Id
 
-The project contains a **one-to-many relationship** between `Department` and `Employee`.
+Unique identifier
 
-```text
+FirstName
+
+Employee first name
+
+LastName
+
+Employee last name
+
+Email
+
+Employee email
+
+PhoneNumber
+
+Employee phone number
+
+DateOfBirth
+
+Employee birth date
+
+DepartmentId
+
+Foreign key of Department
+
+Status
+
+Employee status
+
+Department
+
+Related Department navigation property
+
+EmployeeProjects
+
+Employee-Project relationship records
+
+CreatedAt
+
+Creation date
+
+UpdatedAt
+
+Last update date
+
+Project
+
+A project contains project information and can have multiple employees assigned to it.
+
+public class Project : AuditEntity
+{
+    public string Name { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public List<EmployeeProject>? EmployeeProjects { get; set; }
+}
+
+Project properties
+
+Property
+
+Description
+
+Id
+
+Unique identifier
+
+Name
+
+Project name
+
+Description
+
+Project description
+
+EmployeeProjects
+
+Employee-Project relationship records
+
+CreatedAt
+
+Creation date
+
+UpdatedAt
+
+Last update date
+
+EmployeeProject
+
+EmployeeProject is a join entity used to represent the many-to-many relationship between Employee and Project.
+
+public class EmployeeProject : BasaEntity
+{
+    public int EmployeeId { get; set; }
+    public Employee Employee { get; set; } = null!;
+
+    public int ProjectId { get; set; }
+    public Project Project { get; set; } = null!;
+}
+
+Although EmployeeProject inherits from BasaEntity, its inherited Id property is ignored in the EF Core configuration because the table uses a composite key.
+
+Entity Relationships
+
+The project contains two main relationship types.
+
+Department - Employee: One-to-Many
+
 Department
     1
     |
     |
     *
 Employee
-```
 
-One department can contain multiple employees, while each employee belongs to only one department.
+One department can contain multiple employees, while each employee belongs to one department.
 
----
+Employee - Project: Many-to-Many
 
-# Audit System
+The many-to-many relationship is implemented explicitly through the EmployeeProject join table.
 
-Both `Department` and `Employee` inherit from `AuditEntity`.
+Employee
+   1
+   |
+   *
+EmployeeProject
+   *
+   |
+   1
+Project
 
-```csharp
-public class AuditEntity : BaseEntity
+From the application point of view:
+
+Employee * -------- * Project
+
+An employee can participate in multiple projects, and a project can contain multiple employees.
+
+EmployeeProject Configuration
+
+The join table uses a composite primary key consisting of EmployeeId and ProjectId.
+
+public class EmployeeProjectConfiguration : IEntityTypeConfiguration<EmployeeProject>
+{
+    public void Configure(EntityTypeBuilder<EmployeeProject> builder)
+    {
+        builder.HasKey(ep => new { ep.EmployeeId, ep.ProjectId });
+
+        builder.HasOne(ep => ep.Employee)
+               .WithMany(e => e.EmployeeProjects)
+               .HasForeignKey(ep => ep.EmployeeId);
+
+        builder.HasOne(ep => ep.Project)
+               .WithMany(p => p.EmployeeProjects)
+               .HasForeignKey(ep => ep.ProjectId);
+
+        builder.Ignore(ep => ep.Id);
+    }
+}
+
+This configuration ensures that the same employee-project pair cannot be inserted more than once.
+
+Example:
+
+EmployeeId | ProjectId
+-----------|----------
+1          | 1
+1          | 2
+2          | 1
+
+The pair (1, 1) cannot be inserted again because it is already part of the composite primary key.
+
+Audit System
+
+Department, Employee, and Project inherit from AuditEntity.
+
+public class AuditEntity : BasaEntity
 {
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }
-```
 
-`CreatedAt` and `UpdatedAt` values are automatically managed inside `MyProjectContext`.
+CreatedAt and UpdatedAt values are automatically managed inside MyProjectContext.
 
-```csharp
 public override Task<int> SaveChangesAsync(
     bool acceptAllChangesOnSuccess,
     CancellationToken cancellationToken = default)
@@ -185,197 +367,261 @@ public override Task<int> SaveChangesAsync(
         acceptAllChangesOnSuccess,
         cancellationToken);
 }
-```
 
 Because of this implementation, audit dates do not need to be manually assigned inside services.
 
----
+Generic Repository
 
-# Department Service
+The project uses a generic repository to centralize common database operations.
 
-`DepartmentService` contains CRUD operations for departments.
+public class Repository<T> : IRepository<T> where T : BasaEntity
+{
+    private readonly MyProjectContext _context;
+    private readonly DbSet<T> Table;
 
-### Available operations
+    public Repository(MyProjectContext context)
+    {
+        _context = context;
+        Table = _context.Set<T>();
+    }
+}
 
-```text
-CreateAsync()
-GetAllAsync()
+Repository operations
+
+AddAsync()
+
+AnyAsync()
+
+GetAll()
+
 GetByIdAsync()
-UpdateAsync()
-DeleteAsync()
-```
 
-### Business Rules
+Update()
 
-When creating a department:
+Delete()
 
-- A department with the same name cannot already exist.
+SaveChangesAsync()
 
-When updating a department:
+The advanced GetAll() overload supports:
 
-- The department must exist.
-- Another department cannot already have the new department name.
+Filtering with Expression<Func<T, bool>>
+
+Ordering
+
+Eager loading with Include() / ThenInclude()
+
+Optional AsNoTracking() behavior
 
 Example:
 
-```csharp
-var exists = await _context.Departments
-    .AnyAsync(d => d.Name == department.Name);
-
-if (exists)
+public IQueryable<T> GetAll(
+    Expression<Func<T, bool>>? predicate = null,
+    Func<IQueryable<T>, IQueryable<T>>? orderBy = null,
+    Func<IQueryable<T>, IQueryable<T>>? include = null,
+    bool disableTracking = true)
 {
-    throw new InvalidOperationException(
-        "A department with this name already exists.");
+    var query = Table.AsQueryable();
+
+    if (disableTracking)
+        query = query.AsNoTracking();
+
+    if (include != null)
+        query = include(query);
+
+    if (predicate != null)
+        query = query.Where(predicate);
+
+    if (orderBy != null)
+        query = orderBy(query);
+
+    return query;
 }
-```
 
----
+Department Service
 
-# Employee Service
+DepartmentService contains CRUD operations and business rules for departments.
 
-`EmployeeService` contains CRUD operations for employees.
+Available operations
 
-### Available operations
+CreateAsync()
+GetAll()
+GetByIdAsync()
+UpdateAsync()
+DeleteAsync()
 
-```text
+Business Rules
+
+When creating a department:
+
+A department with the same name cannot already exist.
+
+When updating a department:
+
+The department must exist.
+
+Another department cannot already have the new department name.
+
+The service uses IRepository<Department> instead of accessing MyProjectContext directly.
+
+private readonly IRepository<Department> _repository;
+
+public DepartmentService(IRepository<Department> repository)
+{
+    _repository = repository;
+}
+
+Loading employees and their projects
+
+Department queries can eagerly load employees and each employee's projects:
+
+public List<Department> GetAll()
+{
+    return _repository.GetAll(
+        null,
+        d => d.OrderBy(d => d.Name),
+        d => d.Include(d => d.Employees)
+              .ThenInclude(e => e.EmployeeProjects)
+              .ThenInclude(ep => ep.Project)
+    ).ToList();
+}
+
+This returns departments together with their employees and the projects assigned to those employees.
+
+Employee Service
+
+EmployeeService contains CRUD operations for employees.
+
+Available operations
+
 CreateAsync()
 GetAllAsync()
 GetByIdAsync()
 UpdateAsync()
 DeleteAsync()
-```
 
----
-
-## Employee Business Rules
+Employee Business Rules
 
 Before creating an employee, the system checks whether the selected department exists.
 
-```csharp
-var department = await _context.Departments
-    .AsNoTracking()
-    .FirstOrDefaultAsync(d => d.Id == employee.DepartmentId);
-```
-
 If the department does not exist, the employee is not created.
 
----
-
-### Department Employee Limit
+Department Employee Limit
 
 Each department has a maximum employee limit.
 
 Before an employee is added, the number of existing employees in the department is checked.
 
-```csharp
-var currentCount = await _context.Employees
-    .CountAsync(e => e.DepartmentId == employee.DepartmentId);
+This prevents adding employees to a department that has already reached its maximum capacity.
 
-if (department.Limit > 0 &&
-    currentCount >= department.Limit)
-{
-    return null;
-}
-```
-
-This prevents adding employees to a department that has reached its maximum capacity.
-
----
-
-## Changing Employee Department
+Changing Employee Department
 
 When an employee is moved to another department, the system checks:
 
-1. Whether the target department exists.
-2. Whether the target department has enough capacity.
+Whether the target department exists.
 
-Only after these checks is the employee's `DepartmentId` updated.
+Whether the target department has enough capacity.
 
----
+Only after these checks is the employee's DepartmentId updated.
 
-# Entity Framework Core
+Entity Framework Core
 
-The application uses `MyProjectContext` as the Entity Framework Core database context.
+The application uses MyProjectContext as the Entity Framework Core database context.
 
-```csharp
 public class MyProjectContext : DbContext
 {
     public DbSet<Department> Departments { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Project> Projects { get; set; } = null!;
+    public DbSet<EmployeeProject> EmployeeProjects { get; set; } = null!;
 }
-```
+
+All entity configurations are loaded automatically from the DataAccess assembly:
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.ApplyConfigurationsFromAssembly(typeof(MyProjectContext).Assembly);
+    base.OnModelCreating(modelBuilder);
+}
 
 SQL Server is used as the database provider.
 
 Example connection:
 
-```csharp
 optionsBuilder.UseSqlServer(
     "Server=localhost;" +
     "Database=MyProjectDb;" +
     "Trusted_Connection=True;" +
     "TrustServerCertificate=True;");
-```
 
----
+Database Tables
 
-# Database Tables
+The project currently creates the following application tables:
 
-The project creates two main database tables:
-
-```text
 Departments
 Employees
-```
+Projects
+EmployeeProjects
 
 Entity Framework Core also creates:
 
-```text
 __EFMigrationsHistory
-```
 
-to keep track of applied migrations.
+which is used to keep track of applied migrations.
 
----
+EmployeeProjects table
 
-# Migrations
+The join table contains the two foreign keys that also form its composite primary key:
+
+EmployeeProjects
+-------------------------
+EmployeeId   PK, FK
+ProjectId    PK, FK
+
+Migrations
 
 Create a new migration:
 
-```powershell
-Add-Migration InitialCreate
-```
+Add-Migration MigrationName
+
+Example:
+
+Add-Migration mig_4
 
 Apply migrations to the database:
 
-```powershell
 Update-Database
-```
 
----
+Remove the latest migration before applying it:
 
-# Running the Application
+Remove-Migration
 
-The Presentation layer creates instances of the context and services.
+The project migrations create the required tables, foreign keys, one-to-many relationship, and the many-to-many relationship through EmployeeProjects.
 
-```csharp
+Running the Application
+
+The Presentation layer can create the context, repositories, and services.
+
+Example for DepartmentService:
+
 using MyProject.Business.Services.Implementation;
 using MyProject.DataAccess.Contexts;
+using MyProject.DataAccess.Repositories.Implementation;
+using MyProject.DataAccess.Repositories.Interfaces;
+using MyProject.Entity.Entities;
 
 using var context = new MyProjectContext();
 
-var departmentService = new DepartmentService(context);
-var employeeService = new EmployeeService(context);
-```
+IRepository<Department> departmentRepository =
+    new Repository<Department>(context);
 
-The service methods can then be called from `Program.cs`.
+var departmentService =
+    new DepartmentService(departmentRepository);
 
----
+The service methods can then be called from Program.cs.
 
-## Get All Departments
+Get All Departments with Employees and Projects
 
-```csharp
-var departments = await departmentService.GetAllAsync();
+var departments = departmentService.GetAll();
 
 foreach (var department in departments)
 {
@@ -384,31 +630,28 @@ foreach (var department in departments)
         $"{department.Name} | " +
         $"{department.Location} | " +
         $"Limit: {department.Limit}");
+
+    if (department.Employees is null)
+        continue;
+
+    foreach (var employee in department.Employees)
+    {
+        Console.WriteLine(
+            $"  Employee: {employee.FirstName} {employee.LastName}");
+
+        if (employee.EmployeeProjects is null)
+            continue;
+
+        foreach (var employeeProject in employee.EmployeeProjects)
+        {
+            Console.WriteLine(
+                $"    Project: {employeeProject.Project.Name}");
+        }
+    }
 }
-```
 
----
+Create Department
 
-## Get All Employees
-
-```csharp
-var employees = await employeeService.GetAllAsync();
-
-foreach (var employee in employees)
-{
-    Console.WriteLine(
-        $"{employee.Id} | " +
-        $"{employee.FirstName} {employee.LastName} | " +
-        $"{employee.Email} | " +
-        $"Department: {employee.Department.Name}");
-}
-```
-
----
-
-## Create Department
-
-```csharp
 var newDepartment = new Department
 {
     Name = "Logistics",
@@ -419,98 +662,162 @@ var newDepartment = new Department
 
 var createdDepartment =
     await departmentService.CreateAsync(newDepartment);
-```
 
----
+Example Project Data
 
-## Create Employee
+INSERT INTO Projects (Name, Description, CreatedAt)
+VALUES
+('CRM System', 'Customer relationship management system', GETDATE()),
+('HR Management', 'Employee and department management system', GETDATE()),
+('E-Commerce', 'Online sales platform', GETDATE()),
+('Mobile Application', 'Company mobile application', GETDATE()),
+('Reporting System', 'Reporting and analytics system', GETDATE());
 
-```csharp
-var newEmployee = new Employee
-{
-    FirstName = "Nurlan",
-    LastName = "Aliyev",
-    Email = "nurlan.aliyev@gmail.com",
-    PhoneNumber = "+994501234567",
-    DateOfBirth = new DateTime(2000, 5, 20),
-    DepartmentId = 2
-};
+Example employee-project assignments:
 
-var createdEmployee =
-    await employeeService.CreateAsync(newEmployee);
+INSERT INTO EmployeeProjects (EmployeeId, ProjectId)
+VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 3),
+(3, 2),
+(3, 4);
 
-if (createdEmployee is null)
-{
-    Console.WriteLine(
-        "Employee could not be created. " +
-        "Department does not exist or department limit has been reached.");
-}
-else
-{
-    Console.WriteLine(
-        $"Employee created: " +
-        $"{createdEmployee.FirstName} " +
-        $"{createdEmployee.LastName}");
-}
-```
+The employee IDs must already exist in the Employees table and the project IDs must already exist in the Projects table.
 
----
+CRUD Operations
 
-# CRUD Operations
+CRUD operations are currently implemented for the main management entities.
 
-The following CRUD operations are implemented for both entities:
+Operation
 
-| Operation | Department | Employee |
-|---|:---:|:---:|
-| Create | ✅ | ✅ |
-| Get All | ✅ | ✅ |
-| Get By Id | ✅ | ✅ |
-| Update | ✅ | ✅ |
-| Delete | ✅ | ✅ |
+Department
 
----
+Employee
 
-# Features
+Create
 
-- Layered project architecture
-- Department CRUD operations
-- Employee CRUD operations
-- SQL Server database
-- Entity Framework Core
-- Async database operations
-- EF Core migrations
-- Fluent API configurations
-- One-to-many relationship
-- Department employee capacity control
-- Department existence validation
-- Duplicate department name validation
-- Automatic `CreatedAt` tracking
-- Automatic `UpdatedAt` tracking
-- `AsNoTracking()` for read operations
-- Related Department data loaded with `Include()`
+✅
 
----
+✅
 
-# Project Purpose
+Get All
+
+✅
+
+✅
+
+Get By Id
+
+✅
+
+✅
+
+Update
+
+✅
+
+✅
+
+Delete
+
+✅
+
+✅
+
+Project and EmployeeProject have been added to the data model and database relationship structure. EmployeeProject is used as the explicit join table between employees and projects.
+
+Features
+
+Layered project architecture
+
+Department CRUD operations
+
+Employee CRUD operations
+
+SQL Server database
+
+Entity Framework Core
+
+Async database operations
+
+EF Core migrations
+
+Fluent API configurations
+
+Generic repository pattern
+
+One-to-many Department -> Employee relationship
+
+Many-to-many Employee <-> Project relationship
+
+Explicit EmployeeProject join table
+
+Composite primary key on EmployeeProject
+
+Department employee capacity control
+
+Department existence validation
+
+Duplicate department name validation
+
+Employee status support
+
+Automatic CreatedAt tracking
+
+Automatic UpdatedAt tracking
+
+AsNoTracking() support for read operations
+
+Filtering and ordering through the generic repository
+
+Related data loading with Include() and ThenInclude()
+
+Automatic configuration discovery with ApplyConfigurationsFromAssembly()
+
+Project Purpose
 
 The main purpose of this project is to practice:
 
-- C# OOP principles
-- Layered architecture
-- Entity Framework Core
-- Database relationships
-- CRUD operations
-- Service layer implementation
-- Interfaces
-- Async / Await
-- LINQ
-- SQL Server
-- Migrations
-- Business rule validation
-- Entity audit tracking
+C# OOP principles
 
----
+Layered architecture
 
-## Author
+Repository pattern
+
+Entity Framework Core
+
+Database relationships
+
+One-to-many relationships
+
+Many-to-many relationships
+
+Join tables and composite keys
+
+CRUD operations
+
+Service layer implementation
+
+Interfaces
+
+Async / Await
+
+LINQ
+
+SQL Server
+
+Migrations
+
+Fluent API
+
+Eager loading
+
+Business rule validation
+
+Entity audit tracking
+
+Author
 
 Developed as a practical C# and Entity Framework Core CRUD project.
